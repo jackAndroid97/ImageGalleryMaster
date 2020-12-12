@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity2">
+<com.xiaopo.flying.sticker.StickerView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/sticker_view"
+    android:layout_below="@+id/add"
+    android:layout_gravity="center">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/haizewang_23"
+        android:scaleType="fitXY"
+        android:id="@+id/img"/>
+
+</com.xiaopo.flying.sticker.StickerView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:text="Add sticker"
+        android:id="@+id/add"/>
+
+</RelativeLayout>
