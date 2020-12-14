@@ -4,25 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000"
     tools:context=".MainActivity2">
-<com.xiaopo.flying.sticker.StickerView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/sticker_view"
-    android:layout_below="@+id/add"
-    android:layout_gravity="center">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/haizewang_23"
-        android:scaleType="fitXY"
-        android:id="@+id/img"/>
 
-</com.xiaopo.flying.sticker.StickerView>
     <Button
         android:layout_width="match_parent"
         android:layout_height="@dimen/_30sdp"
-        android:text="Add sticker"
+        android:text="Add Media"
         android:id="@+id/add"/>
-
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/caption"
+        android:id="@+id/imageSwitch"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_above="@+id/list"
+        android:id="@+id/caption"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginVertical="@dimen/_8sdp"
+        android:background="@drawable/edit_box"
+        android:hint="Add caption"
+        android:textSize="15sp"
+        android:visibility="gone"
+        android:textColorHint="#fff"
+        android:textColor="#fff"
+        android:paddingLeft="@dimen/_5sdp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_8sdp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/list"/>
 </RelativeLayout>

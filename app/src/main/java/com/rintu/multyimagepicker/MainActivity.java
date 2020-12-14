@@ -29,13 +29,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -105,10 +108,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private void pickImageIntent(){
         Intent intent=new Intent();
-        intent.setType("image/*");
+        intent.setType("*/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,"Select images"),PICK_IMAGE_CODE);
+
     }
 
 
@@ -122,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     int count=data.getClipData().getItemCount();
                     for(int i=0; i<count; i++){
                        uri=data.getClipData().getItemAt(i).getUri();
+
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(MainActivity.this.getContentResolver(), uri);
                             imageUri.add(bitmap);
@@ -225,7 +230,8 @@ public class MainActivity extends AppCompatActivity {
             final ImageView undo = (ImageView) view.findViewById(R.id.undo);
             final ImageView sticker = (ImageView) view.findViewById(R.id.sticker);
             final TextView save = (TextView) view.findViewById(R.id.done);
-            stickerView = (StickerView) findViewById(R.id.sticker_view);
+            final LinearLayout item = (LinearLayout) view.findViewById(R.id.item);
+          //  stickerView = (StickerView) findViewById(R.id.sticker_view);
             final ImageView draw = (ImageView) view.findViewById(R.id.draw);
             final FrameLayout layout = (FrameLayout) view.findViewById(R.id.layout);
             final DrawingView mDrawingView=(DrawingView)view.findViewById(R.id.img_screenshot);
@@ -369,10 +375,40 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });*/
+
             Glide.with(context)
                     .load(imageUri.get(position))
                     .into(imageView);
             container.addView(view);
+            Toast.makeText(context, ""+imageUri.get(position), Toast.LENGTH_SHORT).show();
+       /*     if(ex.equals("jpg")){
+                Glide.with(context)
+                        .load(imageUri.get(position))
+                        .into(imageView);
+                container.addView(view);
+            }
+            if(ex.equals("JPEG")){
+                Glide.with(context)
+                        .load(imageUri.get(position))
+                        .into(imageView);
+                container.addView(view);
+            }
+            if(ex.equals("png")){
+                Glide.with(context)
+                        .load(imageUri.get(position))
+                        .into(imageView);
+                container.addView(view);
+            }
+            if(ex.equals("mp4")){
+                item.setVisibility(View.GONE);
+            }
+            if(ex.equals("PNG")){
+                Glide.with(context)
+                        .load(imageUri.get(position))
+                        .into(imageView);
+                container.addView(view);
+            }
+*/
            // mDrawingView.loadImage(imageUri.get(position));
             return view;
         }
