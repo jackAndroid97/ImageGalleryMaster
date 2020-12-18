@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -80,20 +81,24 @@ public class MainActivity2 extends AppCompatActivity {
     List<Uri> imageUri;
     String ext="";
     int pos,random;
+    LinearLayout linear_caption;
     EditText caption;
     BottomSheetDialog bottomSheetColour;
+    FloatingActionButton send;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         image=findViewById(R.id.img);
         add=findViewById(R.id.add);
+        send=findViewById(R.id.fab);
 
 
         imageSwitcher=findViewById(R.id.imageSwitch);
         imageUri=new ArrayList<>();
         list=findViewById(R.id.list);
         caption=findViewById(R.id.caption);
+        linear_caption=findViewById(R.id.linear_caption);
         final LinearLayoutManager gridLayoutManager2= new LinearLayoutManager(MainActivity2.this,LinearLayoutManager.HORIZONTAL,false);
         list.setHasFixedSize(true);
         list.setLayoutManager(gridLayoutManager2);
@@ -137,6 +142,12 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
 
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
@@ -151,7 +162,7 @@ public class MainActivity2 extends AppCompatActivity {
 
             ListAdapter listAdapter=new ListAdapter(MainActivity2.this,Matisse.obtainResult(data));
             list.setAdapter(listAdapter);
-            caption.setVisibility(View.VISIBLE);
+            linear_caption.setVisibility(View.VISIBLE);
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -165,7 +176,7 @@ public class MainActivity2 extends AppCompatActivity {
 
                 ListAdapter listAdapter=new ListAdapter(MainActivity2.this,imageUri);
                 list.setAdapter(listAdapter);
-                caption.setVisibility(View.VISIBLE);
+                linear_caption.setVisibility(View.VISIBLE);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
                 Toast.makeText(this, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -365,7 +376,7 @@ public class MainActivity2 extends AppCompatActivity {
                     ListAdapter listAdapter=new ListAdapter(MainActivity2.this,imageUri);
                     list.setAdapter(listAdapter);
 
-                    caption.setVisibility(View.VISIBLE);
+                    linear_caption.setVisibility(View.VISIBLE);
                 }
             });
             ContentResolver cR = context.getContentResolver();

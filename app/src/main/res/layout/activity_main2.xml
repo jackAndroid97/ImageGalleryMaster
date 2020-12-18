@@ -15,22 +15,47 @@
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/caption"
+        android:layout_above="@+id/linear_caption"
         android:id="@+id/imageSwitch"/>
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_35sdp"
-        android:layout_above="@+id/list"
-        android:id="@+id/caption"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginVertical="@dimen/_8sdp"
-        android:background="@drawable/edit_box"
-        android:hint="Add caption"
-        android:textSize="15sp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/linear_caption"
         android:visibility="gone"
-        android:textColorHint="#fff"
-        android:textColor="#fff"
-        android:paddingLeft="@dimen/_5sdp"/>
+        android:layout_above="@+id/list">
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_35sdp"
+            android:id="@+id/caption"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_8sdp"
+            android:background="@drawable/edit_box"
+            android:hint="Add caption"
+            android:textSize="15sp"
+            android:textColorHint="#fff"
+            android:textColor="#fff"
+            android:paddingLeft="@dimen/_5sdp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            >
+            <!--app:fabSize="mini"-->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:src="@drawable/send"
+
+                 />
+        </LinearLayout>
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
