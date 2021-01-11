@@ -25,6 +25,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Layout;
 import android.util.Log;
@@ -41,6 +42,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.divyanshu.colorseekbar.ColorSeekBar;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -72,8 +75,9 @@ import java.util.Random;
 import io.reactivex.functions.Consumer;
 
 public class MainActivity2 extends AppCompatActivity {
-    ImageView image,imageView;
+    ImageView image;
     Button add;
+    PhotoView imageView;
     RecyclerView list;
     private static final int PICK_IMAGE_CODE=0;
    // private UriAdapter mAdapter;
@@ -81,10 +85,14 @@ public class MainActivity2 extends AppCompatActivity {
     List<Uri> imageUri;
     String ext="";
     int pos,random;
-    LinearLayout linear_caption;
+    LinearLayout linear_caption,color_liner;
     EditText caption;
     BottomSheetDialog bottomSheetColour;
     FloatingActionButton send;
+
+    ColorSeekBar  colorSeekBar;
+    public static final String root= Environment.getExternalStorageDirectory().toString();
+    public static final String app_folder=root+"/Truper/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +107,9 @@ public class MainActivity2 extends AppCompatActivity {
         list=findViewById(R.id.list);
         caption=findViewById(R.id.caption);
         linear_caption=findViewById(R.id.linear_caption);
+        color_liner=findViewById(R.id.color_liner);
+        colorSeekBar=findViewById(R.id.color_seek_bar);
+
         final LinearLayoutManager gridLayoutManager2= new LinearLayoutManager(MainActivity2.this,LinearLayoutManager.HORIZONTAL,false);
         list.setHasFixedSize(true);
         list.setLayoutManager(gridLayoutManager2);
@@ -168,6 +179,20 @@ public class MainActivity2 extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
+                final int min =100000000;
+                final int max =999999999;
+                random = new Random().nextInt((max - min) + 1) + min;
+                File file = new File(app_folder, +random+".jpg");
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(MainActivity2.this.getContentResolver(), resultUri);
+                    FileOutputStream out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 imageUri.remove(pos);
                 imageUri.add(0,resultUri);
                 add.setVisibility(View.GONE);
@@ -216,7 +241,7 @@ public class MainActivity2 extends AppCompatActivity {
             View view = LayoutInflater.from(context).inflate(R.layout.custom_viewpager, null);
 
             //mapping
-            imageView = (ImageView) view.findViewById(R.id.imageView);
+            imageView = (PhotoView) view.findViewById(R.id.imageView);
             final ImageView crop = (ImageView) view.findViewById(R.id.crop);
             final ImageView play = (ImageView) view.findViewById(R.id.play);
             final ImageView colour_pallet = (ImageView) view.findViewById(R.id.colour);
@@ -303,7 +328,19 @@ public class MainActivity2 extends AppCompatActivity {
                 public void onClick(View view) {
                     colour_pallet.setColorFilter(ContextCompat.getColor(context, R.color.colorAccent), android.graphics.PorterDuff.Mode.MULTIPLY);
 
-                    bottomSheetColour = new BottomSheetDialog(MainActivity2.this);
+                    color_liner.setVisibility(View.VISIBLE);
+
+                    colorSeekBar.setOnColorChangeListener(new ColorSeekBar.OnColorChangeListener() {
+                        @Override
+                        public void onColorChangeListener(int i) {
+
+                            mDrawingView.setPenColor(i);
+                            draw.setColorFilter(i, android.graphics.PorterDuff.Mode.MULTIPLY);
+                            colour_pallet.setColorFilter(i, android.graphics.PorterDuff.Mode.MULTIPLY);
+                           // color_liner.setVisibility(View.GONE);
+                        }
+                    });
+                /*    bottomSheetColour = new BottomSheetDialog(MainActivity2.this);
                     final View parentview = (View) getLayoutInflater().inflate(R.layout.colour_bottom,null);
                     final CardView green=parentview.findViewById(R.id.green);
                     final CardView blue=parentview.findViewById(R.id.blue);
@@ -341,9 +378,8 @@ public class MainActivity2 extends AppCompatActivity {
                             bottomSheetColour.dismiss();
                         }
                     });
+*/
 
-                    bottomSheetColour.setContentView(parentview);
-                    bottomSheetColour.show();
                 }
             });
             save.setOnClickListener(new View.OnClickListener() {
@@ -377,6 +413,7 @@ public class MainActivity2 extends AppCompatActivity {
                     list.setAdapter(listAdapter);
 
                     linear_caption.setVisibility(View.VISIBLE);
+                    color_liner.setVisibility(View.GONE);
                 }
             });
             ContentResolver cR = context.getContentResolver();
